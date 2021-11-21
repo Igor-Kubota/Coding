@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testegridview/home_screen.dart';
 
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       // Hide the debug banner
       debugShowCheckedModeBanner: false,
       title: 'Kindacode.com',
-      home: MyPage(),
+      home: HomeScreen(),
     );
   }
 }
@@ -28,23 +29,10 @@ class MyPage extends StatelessWidget {
           title: Text("Hello world"),
         ),
 
-/*
-        body:
-         Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround ,
-          mainAxisSize: MainAxisSize.min,
-          children: [ElevatedButton(
-            onPressed: (){},
-            child: Image.network("https://pbs.twimg.com/media/FEaCjohXIAQPVgl?format=jpg&name=small"
-            
-          ),    
-        )
-      ]          
-    ),
-  );
-}
-*/  
-        body: Center(
+        body: 
+        
+        Container(
+          alignment: Alignment.bottomLeft,
           child: Material(
             color: Colors.blueGrey,
             elevation: 8,
@@ -59,37 +47,34 @@ class MyPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Ink.image(
+                  Expanded(
+                  child: Ink.image(
                     image: const NetworkImage("https://pbs.twimg.com/media/FEaCjohXIAQPVgl?format=jpg&name=small"),
-                    height: 200,
-                    width: 200,
+                    height: 100,
+                    width: 100,
                     fit: BoxFit.cover,
                   ),
-                  const SizedBox(height: 6),
+                  ),
+                  const SizedBox(height: 3),
                   const Text(
                     'Maru',
-                    style: TextStyle(fontSize: 32, color: Colors.white),
+                    style: TextStyle(fontSize: 12, color: Colors.white),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 3),
                 ]
             ),  
           ),
-          ),      
-        ), 
-              
-            
-              
-            
-            
-        );
-    
-}
+        ),      
+      ),       
+    );  
+  }
+
+
+
 
 
 class GamePage1 extends StatelessWidget {
  GamePage1({ Key? key }) : super(key: key);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +98,6 @@ class GamePage1 extends StatelessWidget {
           ),
         ],
       ),
-      
     );
   }
 }
