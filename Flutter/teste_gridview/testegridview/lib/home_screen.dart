@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'main.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -38,9 +37,18 @@ class HomeScreen extends StatelessWidget {
             child: InkWell(
               splashColor: Colors.black26,
               onTap: (){
+                if(index == 0){
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => GamePage1()));
-                        },
+               }else if(index == 1){
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => GamePage2()));
+               }else{
+                 Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => GamePage1()));
+               }
+
+              },
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -69,3 +77,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+

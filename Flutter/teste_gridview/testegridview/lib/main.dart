@@ -47,13 +47,11 @@ class MyPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                  child: Ink.image(
+                  Ink.image(
                     image: const NetworkImage("https://pbs.twimg.com/media/FEaCjohXIAQPVgl?format=jpg&name=small"),
                     height: 100,
                     width: 100,
                     fit: BoxFit.cover,
-                  ),
                   ),
                   const SizedBox(height: 3),
                   const Text(
@@ -95,6 +93,36 @@ class GamePage1 extends StatelessWidget {
               }
             ),
             subtitle: const Text("aaaaaaaaaaaa"),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class GamePage2 extends StatelessWidget {
+ GamePage2({ Key? key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Game Review"),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            title: const Text("bbbbbbbbbb"),
+            leading: TextButton(
+              child: Image.network("https://pbs.twimg.com/media/FEaCjohXIAQPVgl?format=jpg&name=small", fit: BoxFit.contain,),
+              
+              onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const MyPage()));
+              }
+            ),
+            subtitle: const Text("BBBBBBBBBBBBB"),
           ),
         ],
       ),
