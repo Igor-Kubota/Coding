@@ -129,3 +129,62 @@ class GamePage2 extends StatelessWidget {
     );
   }
 }
+
+class GamePage3 extends StatelessWidget {
+ GamePage3({ Key? key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Game Review"),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            title: const Text("CCCCCCCCCCCCC"),
+            leading: TextButton(
+              child: Image.network("https://pbs.twimg.com/media/FEaCjohXIAQPVgl?format=jpg&name=small", fit: BoxFit.contain,),
+              
+              onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const MyPage()));
+              }
+            ),
+            subtitle: const Text("cccccccccccc"),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class GamePage4 extends StatelessWidget {
+ GamePage4({ Key? key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Game Review"),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            title: const Text("DDDDDDDDDDDDDD"),
+            leading: TextButton(
+              child: Image.network("https://pbs.twimg.com/media/FEaCjohXIAQPVgl?format=jpg&name=small", fit: BoxFit.contain,),
+              
+              onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const MyPage()));
+              }
+            ),
+            subtitle: const Text("ddddddddddddddd"),
+          ),
+        ],
+      ),
+    );
+  }
+}
