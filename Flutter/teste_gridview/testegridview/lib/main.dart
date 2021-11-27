@@ -1,10 +1,14 @@
-import 'dart:convert';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:testegridview/game_json.dart';
 import 'package:testegridview/home_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:testegridview/review_game_json.dart';
 import 'dart:convert';
+
+import 'network_helper.dart';
+import 'pessoa.dart';
 
 
 
@@ -21,9 +25,11 @@ class MyApp extends StatelessWidget {
       title: 'Kindacode.com',
       theme: ThemeData(
         colorScheme: const ColorScheme.dark().copyWith(
-          primary: Colors.deepPurple ,
+          primary: Colors.lightBlueAccent.shade400 ,
           secondary: const Color(0XFF1F1B24),
-          surface: Colors.deepPurple
+          surface: Colors.lightBlueAccent.shade400,
+          
+          
         ),
         
         //brightness: Brightness.dark
@@ -175,7 +181,7 @@ class _GamePage1State extends State<GamePage1> {
     ); 
                
            }else{
-             return Center(child: CircularProgressIndicator(),);
+             return const Center(child: CircularProgressIndicator(),);
            }
          }
        ),
@@ -214,6 +220,7 @@ class _GamePage2State extends State<GamePage2> {
 
        body: FutureBuilder(
          future: ReadJsonData(),
+
          builder: (context, data){
            if (data.hasError){
              return Center(child:Text("${data.error}"));
@@ -226,14 +233,18 @@ class _GamePage2State extends State<GamePage2> {
           return Card(
             child: Padding(
               padding: const EdgeInsets.only(top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
-              child: Column(
+              
+              child: Column(  
               crossAxisAlignment: CrossAxisAlignment.start,
+              
               children: <Widget> [
+              
                 Text(
                   items[index+1].name.toString(),
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.cyan.shade200
+                  color: Colors.cyan.shade200,
+                  
                   )
                 ),
 
@@ -268,6 +279,7 @@ class _GamePage2State extends State<GamePage2> {
                   color: Colors.cyan.shade200
                   )
                 ),
+                
               ],
             ),
           )
@@ -276,7 +288,7 @@ class _GamePage2State extends State<GamePage2> {
     ); 
                
            }else{
-             return Center(child: CircularProgressIndicator(),);
+             return const Center(child: CircularProgressIndicator(),);
            }
          }
        ),
@@ -284,61 +296,417 @@ class _GamePage2State extends State<GamePage2> {
   }
 }
 
-class GamePage3 extends StatelessWidget {
- GamePage3({ Key? key }) : super(key: key);
+
+class GamePage3 extends StatefulWidget {
+  const GamePage3({ Key? key }) : super(key: key);
 
   @override
+  _GamePage3State createState() => _GamePage3State();
+}
+
+class _GamePage3State extends State<GamePage3> {
+    
+  Future<List<ReviewGameJson>> readjsondata() async {
+    const url = "http://localhost:8080/games";
+    //final http.Response jsonData= await http.get(Uri.parse(url));
+
+
+    var response = await http.get(Uri.parse(url));
+    var rb = response.body;
+
+    // store json data into list
+    var list = json.decode(rb) as List;
+
+    // iterate over the list and map each object in list to Img by calling Img.fromJson
+    List<ReviewGameJson> imgs = list.map((i)=>ReviewGameJson.fromJson(i)).toList();
+
+    print(imgs.runtimeType); //returns List<Img>
+    print(imgs[0].runtimeType); //returns Img
+
+    return imgs;
+}
+  
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+      
       appBar: AppBar(
         title: const Text("Game Review"),
       ),
-      body: ListView(
-        children: [
-          ListTile(
-            title: const Text("CCCCCCCCCCCCC"),
-            leading: TextButton(
-              child: Image.network("https://pbs.twimg.com/media/FEaCjohXIAQPVgl?format=jpg&name=small", fit: BoxFit.contain,),
+
+
+       body: FutureBuilder(
+         future: readjsondata(),
+
+         builder: (context, data){
+           if (data.hasError){
+             return Center(child:Text("${data.error}"));
+
+           }else if (data.hasData){
+             var items = data.data as List<ReviewGameJson>;
+             return ListView.builder(
+               itemCount: 1,
+               itemBuilder: (context, index){
+            return Card(
+            color: const Color(0XFF1F1B24),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
               
-              onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const MyPage()));
-              }
+              child: Container(
+                color: const Color(0XFF1F1B24),
+
+                height: 260,
+                child: Card(
+                  color: const Color(0XFF1F1B24),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 34,
+                        child: Image.network(
+                          'https://upload.wikimedia.org/wikipedia/commons/8/88/MIS%2C_SP%2C_6_%28entrada%29.JPG',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 66,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          items[index].name.toString(),
+                          style: TextStyle(
+                          fontSize: 36,
+                          color: Colors.cyan.shade100,
+                        )
+                      ),
+                    ),
+
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          "Developer: " + items[index].developer.toString(),
+                          style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blueGrey.shade200,
+                        )
+                      ),
+                    ),
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          "Genre: " + items[index].genre.toString(),
+                          style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blueGrey.shade200,
+                        )
+                      ),
+                    ),
+
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          "Score: " + items[index].score.toString(),
+                          style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blueGrey.shade200,
+                        )
+                      ),
+                    ),
+
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          "Release Date: "+ items[index].release.toString(),
+                          style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blueGrey.shade200,
+                        )
+                      ),
+                    ),
+
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          "Platform: "+ items[index].consoles.toString(),
+                          style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blueGrey.shade200,
+                        )
+                      ),
+                    ),
+                    
+                    ],
+                  ),
+                )
+              ],
             ),
-            subtitle: const Text("cccccccccccc"),
           ),
-        ],
-      ),
+        ),
+      )
+    );
+  }
+);
+           }else{
+             return const Center(child: CircularProgressIndicator(),);
+           }
+         }
+       ),
     );
   }
 }
 
 
-class GamePage4 extends StatelessWidget {
- GamePage4({ Key? key }) : super(key: key);
+
+
+
+class GamePage4 extends StatefulWidget {
+  const GamePage4({ Key? key }) : super(key: key);
+
+  @override
+  _GamePage4State createState() => _GamePage4State();
+}
+
+class _GamePage4State extends State<GamePage4> {
+    
+  Future<List<GameJson>> ReadJsonData() async{
+    const url = "http://localhost:8080/games";
+    final http.Response jsonData= await http.get(Uri.parse(url));
+
+    final list = jsonDecode(jsonData.body) as List<dynamic>;
+
+    return list.map((e) => GameJson.fromJson(e)).toList();
+  }
+
+  List<Pessoa> pessoas = [];
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+      decoration: const  BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0XFF0d324d),
+            Color(0XFF000000)
+          ],
+        ),
+      ), 
+
+    child: Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        title: const Text("Game Review"),
+      ),
+
+
+       body: FutureBuilder(
+         future: ReadJsonData(),
+
+         builder: (context, data){
+           if (data.hasError){
+             return Center(child:Text("${data.error}"));
+
+           }else if (data.hasData){
+             var items = data.data as List<GameJson>;
+             return ListView.builder(
+               itemCount: 1,
+               itemBuilder: (context, index){
+
+          return Column(
+            children: [
+              Card(
+              elevation: 0,
+              color: Colors.transparent,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+              
+              child: Container(
+              
+                color: Colors.transparent,
+
+                height: 260,
+                child: Card(
+                  elevation: 0,
+                  color: Colors.transparent,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 34,
+                        child: Image.network(
+                          'https://upload.wikimedia.org/wikipedia/commons/8/88/MIS%2C_SP%2C_6_%28entrada%29.JPG',
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 66,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          items[index+1].name.toString(),
+                          style: TextStyle(
+                          fontSize: 36,
+                          color: Colors.cyan.shade100,
+                        )
+                      ),
+                    ),
+
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          "Developer: " + items[index+1].developer.toString(),
+                          style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blueGrey.shade200,
+                        )
+                      ),
+                    ),
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          "Genre: " + items[index+1].genre.toString(),
+                          style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blueGrey.shade200,
+                        )
+                      ),
+                    ),
+
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          "Score: " + items[index+1].score.toString(),
+                          style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blueGrey.shade200,
+                        )
+                      ),
+                    ),
+
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          "Release Date: "+ items[index+1].release.toString(),
+                          style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blueGrey.shade200,
+                        )
+                      ),
+                    ),
+
+                      Expanded(
+                        flex: 15,
+                        child: Text(
+                          "Platform: "+ items[index+1].consoles.toString(),
+                          style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blueGrey.shade200,
+                          )
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        )      
+      )
+    ),
+    Card(
+      elevation: 0,
+      color: Colors.transparent,
+      child: Padding(
+              padding:EdgeInsets.only(top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+              child: Column(
+                children: [
+                  TextButton.icon(
+                  onPressed: ()async{
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MinhaListaDinamica()));
+                },
+        
+                  icon: Icon(Icons.sort), 
+                  label: Text("Load Reviews",
+                  style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blueGrey.shade200,
+                    )
+                  ),
+                ),
+              ],
+            )
+          )
+        )
+      ]
+    );
+  }
+);
+           }else{
+             return const Center(child: CircularProgressIndicator(),);
+           }
+         }
+       ),
+      )
+    );
+  }
+}
+
+class MinhaListaDinamica extends StatefulWidget {
+  const MinhaListaDinamica({ Key? key }) : super(key: key);
+
+  @override
+  State<MinhaListaDinamica> createState() => _MinhaListaDinamicaState();
+}
+
+class _MinhaListaDinamicaState extends State<MinhaListaDinamica> {
+  List<User> users = [];
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Game Review"),
-      ),
-      body: ListView(
-        children: [
-          ListTile(
-            title: const Text("DDDDDDDDDDDDDD"),
-            leading: TextButton(
-              child: Image.network("https://pbs.twimg.com/media/FEaCjohXIAQPVgl?format=jpg&name=small", fit: BoxFit.contain,),
-              
-              onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const MyPage()));
-              }
-            ),
-            subtitle: const Text("ddddddddddddddd"),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text("Minha Lista Dinâmica"),),
+      body: ListView.builder(
+        itemCount: users.length,
+        itemBuilder: (context, itemIndex){
+          return ListTile(
+            title: Text("${users[itemIndex].name}"),
+            subtitle: Text("${users[itemIndex].email}"),
+            
+            
+            
+          ); 
+        },
+      ), 
+       
+      floatingActionButton: FloatingActionButton(
+        onPressed: ()async{
+          NetworkHelper helper = NetworkHelper(url:"http://localhost:8080/games/2");
+          ReviewGameJson randomUsers = ReviewGameJson.fromJson(await helper.getData());
+          //Colocar mais usuários
+          randomUsers.reviews!.forEach((element) {
+          users.add(
+              User(
+              name: element.user!.name!, 
+              email: element.review!)
+            );
+          
+          });
+          setState(() {});
+        },
+        child: Icon(Icons.search_sharp),
+      ),     
     );
   }
 }

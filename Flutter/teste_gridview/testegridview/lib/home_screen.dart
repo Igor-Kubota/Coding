@@ -6,8 +6,8 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
   final List<Pessoa> pessoas = [
-    Pessoa(nome: "Maru", 
-           url: "https://pbs.twimg.com/media/FEaCjohXIAQPVgl?format=jpg&name=small"),
+  Pessoa(nome: "Maru", 
+         url: "https://pbs.twimg.com/media/FEaCjohXIAQPVgl?format=jpg&name=small"),
 
   Pessoa(nome: "Karen",
          url: "https://pbs.twimg.com/media/FE1ITjQacAAcD7X?format=jpg&name=large",),
