@@ -634,7 +634,7 @@ class _GamePage4State extends State<GamePage4> {
                 },
         
                   icon: const Icon(Icons.sort), 
-                  label: Text("Load Reviews",
+                  label: Text("Load Review Page",
                   style: TextStyle(
                           fontSize: 20,
                           color: Colors.blueGrey.shade200,
@@ -699,18 +699,21 @@ class _MinhaListaDinamicaState extends State<MinhaListaDinamica> {
                 color: Colors.cyan.shade100
               ),
             ),
-            leading: const Icon(Icons.account_circle),
+            leading: const Icon(
+              Icons.account_circle,
+              size: 40.0,
+              ),
             subtitle: Text(
               "${reviews[itemIndex].user!.name}",
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.blueGrey.shade200,
               ),
-              ),
+            ),
           ); 
         },
       ),  
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           NetworkHelper helper = NetworkHelper(url:"http://localhost:8080/games/2");
           ReviewGameJson randomUsers = ReviewGameJson.fromJson(await helper.getData());
@@ -722,11 +725,16 @@ class _MinhaListaDinamicaState extends State<MinhaListaDinamica> {
               user: element.user! , 
               )
             );
-          
-          });
+ 
+          }
+        );
           setState(() {});
         },
-        child:const Icon(Icons.sort),
+        label: const Text("Load All Reviews for this game"),
+        icon: const Icon(Icons.sort,
+        size: 40.0,),
+        backgroundColor: Colors.cyan.shade100,
+
         ),     
       )
     );
