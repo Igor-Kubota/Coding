@@ -1,14 +1,11 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:testegridview/game_json.dart';
 import 'package:testegridview/home_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:testegridview/review_game_json.dart';
 import 'dart:convert';
-
 import 'network_helper.dart';
-import 'pessoa.dart';
+
 
 
 
@@ -482,7 +479,6 @@ class _GamePage4State extends State<GamePage4> {
     return list.map((e) => GameJson.fromJson(e)).toList();
   }
 
-  List<Pessoa> pessoas = [];
 
   @override
   Widget build(BuildContext context) {
@@ -624,10 +620,11 @@ class _GamePage4State extends State<GamePage4> {
       )
     ),
     Card(
+      
       elevation: 0,
       color: Colors.transparent,
       child: Padding(
-              padding:EdgeInsets.only(top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+              padding:const EdgeInsets.only(top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
               child: Column(
                 children: [
                   TextButton.icon(
@@ -636,7 +633,7 @@ class _GamePage4State extends State<GamePage4> {
                               builder: (context) => MinhaListaDinamica()));
                 },
         
-                  icon: Icon(Icons.sort), 
+                  icon: const Icon(Icons.sort), 
                   label: Text("Load Reviews",
                   style: TextStyle(
                           fontSize: 20,
@@ -652,6 +649,8 @@ class _GamePage4State extends State<GamePage4> {
     );
   }
 );
+    
+
            }else{
              return const Center(child: CircularProgressIndicator(),);
            }
@@ -670,43 +669,66 @@ class MinhaListaDinamica extends StatefulWidget {
 }
 
 class _MinhaListaDinamicaState extends State<MinhaListaDinamica> {
-  List<User> users = [];
+  List<Review> reviews = [];
   
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Container(
+      decoration: const  BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0XFF0d324d),
+            Color(0XFF000000)
+          ],
+        ),
+      ), 
+    child: Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(title: const Text("Minha Lista Dinâmica"),),
       body: ListView.builder(
-        itemCount: users.length,
+        itemCount: reviews.length,
         itemBuilder: (context, itemIndex){
           return ListTile(
-            title: Text("${users[itemIndex].name}"),
-            subtitle: Text("${users[itemIndex].email}"),
-            
-            
-            
+            title: Text(
+              reviews[itemIndex].review!,
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.cyan.shade100
+              ),
+            ),
+            leading: const Icon(Icons.account_circle),
+            subtitle: Text(
+              "${reviews[itemIndex].user!.name}",
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.blueGrey.shade200,
+              ),
+              ),
           ); 
         },
-      ), 
-       
+      ),  
       floatingActionButton: FloatingActionButton(
-        onPressed: ()async{
+        onPressed: () async {
           NetworkHelper helper = NetworkHelper(url:"http://localhost:8080/games/2");
           ReviewGameJson randomUsers = ReviewGameJson.fromJson(await helper.getData());
           //Colocar mais usuários
           randomUsers.reviews!.forEach((element) {
-          users.add(
-              User(
-              name: element.user!.name!, 
-              email: element.review!)
+          reviews.add(
+              Review(
+              review: element.review!,
+              user: element.user! , 
+              )
             );
           
           });
           setState(() {});
         },
-        child: Icon(Icons.search_sharp),
-      ),     
+        child:const Icon(Icons.sort),
+        ),     
+      )
     );
   }
 }
