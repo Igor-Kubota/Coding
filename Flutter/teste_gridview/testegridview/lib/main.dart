@@ -715,7 +715,7 @@ class _MinhaListaDinamicaState extends State<MinhaListaDinamica> {
       ),  
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          NetworkHelper helper = NetworkHelper(url:"http://localhost:8080/games/2");
+          NetworkHelper helper = NetworkHelper(url:"http://localhost:8080/games/4");
           ReviewGameJson randomUsers = ReviewGameJson.fromJson(await helper.getData());
           //Colocar mais usuários
           randomUsers.reviews!.forEach((element) {
