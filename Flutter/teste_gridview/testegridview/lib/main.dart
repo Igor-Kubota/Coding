@@ -670,7 +670,8 @@ class MinhaListaDinamica extends StatefulWidget {
 
 class _MinhaListaDinamicaState extends State<MinhaListaDinamica> {
   List<Review> reviews = [];
-  
+  var _firstPress = true;
+
 
   @override
   Widget build(BuildContext context) {
@@ -715,6 +716,9 @@ class _MinhaListaDinamicaState extends State<MinhaListaDinamica> {
       ),  
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
+          if(_firstPress){
+          _firstPress = false ;
+          
           NetworkHelper helper = NetworkHelper(url:"http://localhost:8080/games/4");
           ReviewGameJson randomUsers = ReviewGameJson.fromJson(await helper.getData());
           //Colocar mais usuários
@@ -729,6 +733,7 @@ class _MinhaListaDinamicaState extends State<MinhaListaDinamica> {
           }
         );
           setState(() {});
+          }
         },
         label: const Text("Load All Reviews for this game"),
         icon: const Icon(Icons.sort,
