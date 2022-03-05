@@ -729,7 +729,6 @@ class _MinhaListaDinamicaState extends State<MinhaListaDinamica> {
               user: element.user! , 
               )
             );
- 
           }
         );
           setState(() {});
@@ -739,7 +738,6 @@ class _MinhaListaDinamicaState extends State<MinhaListaDinamica> {
         icon: const Icon(Icons.sort,
         size: 40.0,),
         backgroundColor: Colors.cyan.shade100,
-
         ),     
       )
     );
